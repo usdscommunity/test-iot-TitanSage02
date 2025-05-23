@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Multi-Node IoT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .card:hover::before {
+            animation: shimmer 1.5s ease-in-out;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .temp-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .humidity-icon {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .stats-icon {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #666;
+        }
+
+        .current-values {
+            display: flex;
+            gap: 30px;
+            justify-content: space-around;
+        }
+
+        .value-container {
+            text-align: center;
+            flex: 1;
+        }
+
+        .value-label {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .current-temp, .current-hum {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .unit {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #status {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        #status:hover::before {
+            left: 100%;
+        }
+
+        #status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #68d391;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+
+        .last-update {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .current-values {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .current-temp, .current-hum {
+                font-size: 2.2rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .card {
+                background: rgba(26, 32, 44, 0.95);
+                color: #e2e8f0;
+            }
+
+            .card h2 {
+                color: #cbd5e0;
+            }
+
+            .value-label {
+                color: #a0aec0;
+            }
+
+            .stat-item {
+                background: linear-gradient(135deg, #2d3748, #4a5568);
+                border-color: #4a5568;
+            }
+
+            .stat-value {
+                color: #e2e8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Smart Multi-Node IoT</h1>
+            <p class="subtitle">Surveillance en temps réel de capteurs</p>
+        </div>
+
+        <div class="metrics">
+            <div class="card">
+                <h2>
+                    <span class="icon temp-icon">🌡</span>
+                    Mesures Actuelles
+                </h2>
+                <div class="current-values">
+                    <div class="value-container">
+                        <div class="value-label">Température</div>
+                        <div class="current-temp" id="current-temp">--<span class="unit">°C</span></div>
+                    </div>
+                    <div class="value-container">
+                        <div class="value-label">Humidité</div>
+                        <div class="current-hum" id="current-hum">--<span class="unit">%</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <span class="icon stats-icon">📊</span>
+                    Statistiques
+                </h2>
+                <div class="stats-container" id="stats">
+                    <div class="stat-item">
+                        <div class="stat-value">°C</div>
+                        <div class="stat-label">Temp. Moyenne</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">%</div>
+                        <div class="stat-label">Hum. Moyenne</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">°C</div>
+                        <div class="stat-label">Temp. Max</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">%</div>
+                        <div class="stat-label">Hum. Min</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="status">
+            <span class="status-dot"></span>
+            Système Actif
+        </div>
+
+
+        <div class="last-update">
+            Dernière mise à jour: <span id="last-update-time">--:--</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

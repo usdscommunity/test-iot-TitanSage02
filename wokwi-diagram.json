@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "Espérance Ayiwahoun",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-dht22", "id": "dht1", "top": 48.3, "left": 129, "attrs": {} },
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp1", "top": 23.9, "left": -72.2, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "ssd1306",
+      "top": -73.66,
+      "left": -66.97,
+      "attrs": { "i2cAddress": "0x3D" }
+    }
+  ],
+  "connections": [
+    [ "dht1:GND", "esp1:GND.1", "black", [ "v38.4", "h-96", "v-28.7" ] ],
+    [ "dht1:SDA", "esp1:D15", "green", [ "v28.8", "h-95.9", "v-28.6" ] ],
+    [ "dht1:VCC", "esp1:3V3", "red", [ "v0" ] ],
+    [ "ssd1306:SCL", "esp1:D22", "green", [ "v-28.8", "h57.9", "v153.9" ] ],
+    [ "esp1:VIN", "ssd1306:VCC", "red", [ "h-19.2", "v-278.4", "h67.05" ] ],
+    [ "esp1:D21", "ssd1306:SDA", "green", [ "h28.5", "v-173.2", "h-57.6" ] ],
+    [ "ssd1306:GND", "esp1:GND.2", "black", [ "v-19.2", "h-48", "v259.3" ] ]
+  ],
+  "dependencies": {}
+}

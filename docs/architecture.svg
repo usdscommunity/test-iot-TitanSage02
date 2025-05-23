@@ -1,0 +1,71 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#2c3e50">
+    Architecture du Système
+  </text>
+  
+  <!-- DHT22 Sensor (bottom left) -->
+  <rect x="50" y="300" width="100" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="8"/>
+  <text x="100" y="320" text-anchor="middle" font-family="Arial" font-size="12" fill="white" font-weight="bold">DHT22</text>
+  <text x="100" y="335" text-anchor="middle" font-family="Arial" font-size="10" fill="white">Capteur</text>
+  <text x="100" y="350" text-anchor="middle" font-family="Arial" font-size="10" fill="white">Temp/Humid</text>
+  
+  <!-- OLED Screen (bottom right of NodeMCU) -->
+  <rect x="250" y="300" width="100" height="60" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="8"/>
+  <text x="300" y="320" text-anchor="middle" font-family="Arial" font-size="12" fill="white" font-weight="bold">OLED</text>
+  <text x="300" y="335" text-anchor="middle" font-family="Arial" font-size="10" fill="white">Écran</text>
+  <text x="300" y="350" text-anchor="middle" font-family="Arial" font-size="10" fill="white">128x64</text>
+  
+  <!-- NodeMCU ESP32 (left) -->
+  <rect x="50" y="150" width="150" height="80" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="8"/>
+  <text x="125" y="175" text-anchor="middle" font-family="Arial" font-size="14" fill="white" font-weight="bold">NodeMCU</text>
+  <text x="125" y="195" text-anchor="middle" font-family="Arial" font-size="12" fill="white">(ESP32)</text>
+  <text x="125" y="210" text-anchor="middle" font-family="Arial" font-size="10" fill="white">Collecte données</text>
+  
+  <!-- Node Server ESP32 (center) -->
+  <rect x="350" y="150" width="150" height="80" fill="#27ae60" stroke="#229954" stroke-width="2" rx="8"/>
+  <text x="425" y="175" text-anchor="middle" font-family="Arial" font-size="14" fill="white" font-weight="bold">Node Server</text>
+  <text x="425" y="195" text-anchor="middle" font-family="Arial" font-size="12" fill="white">(ESP32)</text>
+  <text x="425" y="210" text-anchor="middle" font-family="Arial" font-size="10" fill="white">Serveur Web</text>
+  
+  <!-- Interface Web (right) -->
+  <rect x="600" y="150" width="150" height="80" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="8"/>
+  <text x="675" y="175" text-anchor="middle" font-family="Arial" font-size="14" fill="white" font-weight="bold">Interface</text>
+  <text x="675" y="195" text-anchor="middle" font-family="Arial" font-size="12" fill="white">Web</text>
+  <text x="675" y="210" text-anchor="middle" font-family="Arial" font-size="10" fill="white">Dashboard</text>
+  
+  <!-- Connections -->
+  <!-- DHT22 to NodeMCU -->
+  <line x1="100" y1="300" x2="100" y2="230" stroke="#2c3e50" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="110" y="270" font-family="Arial" font-size="10" fill="#2c3e50">Données</text>
+  <text x="110" y="285" font-family="Arial" font-size="10" fill="#2c3e50">capteur</text>
+  
+  <!-- NodeMCU to OLED -->
+  <line x1="175" y1="230" x2="275" y2="300" stroke="#2c3e50" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="230" y="260" font-family="Arial" font-size="10" fill="#9b59b6" font-weight="bold">I2C</text>
+  <text x="215" y="275" font-family="Arial" font-size="9" fill="#2c3e50">Affichage local</text>
+  
+  <!-- NodeMCU to Node Server -->
+  <line x1="200" y1="190" x2="350" y2="190" stroke="#2c3e50" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="250" y="180" text-anchor="middle" font-family="Arial" font-size="12" fill="#e74c3c" font-weight="bold">HTTP</text>
+  <text x="250" y="210" text-anchor="middle" font-family="Arial" font-size="10" fill="#2c3e50">Envoi ESP</text>
+  
+  <!-- Node Server to Interface Web -->
+  <line x1="500" y1="190" x2="600" y2="190" stroke="#2c3e50" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="550" y="180" text-anchor="middle" font-family="Arial" font-size="10" fill="#2c3e50">Données web</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  
+  <!-- Network annotations -->
+  <rect x="250" y="80" width="300" height="40" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" rx="5"/>
+  <text x="400" y="100" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#2c3e50">Réseau WiFi Local</text>
+  <text x="400" y="115" text-anchor="middle" font-family="Arial" font-size="10" fill="#2c3e50">Communication entre ESP32</text>
+</svg>
